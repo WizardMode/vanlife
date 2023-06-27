@@ -1,10 +1,30 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom"
+//import App from './App.jsx'
+import Home from "./pages/Home"
+import About from "./pages/About"
 import './index.css'
 
+function App() {
+  return (
+    <BrowserRouter>
+      <header>
+        <Link className="site-logo" to="/">#VANLIFE</Link>
+        <nav>
+          <Link to="/about">About</Link>
+        </nav>
+      </header>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+      </Routes>
+    </BrowserRouter>
+  )
+}
+
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
     <App />
-  </React.StrictMode>,
 )
+
+// BrowserRouter is a context provider
