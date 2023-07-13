@@ -12,7 +12,9 @@ function HostVans() {
 
     const hostVansEls = vans.map(van => (
         <Link
-            to={`/host/vans/${van.id}`}
+            /* to={`/host/vans/${van.id}`} -> use relative path instead of absolute path
+                also no template string `` require, since id is already a string */
+            to={van.id}
             key={van.id}
             className="host-van-link-wrapper"
         >
