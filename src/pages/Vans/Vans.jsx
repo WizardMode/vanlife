@@ -23,7 +23,7 @@ function Vans() {
         <div key={van.id} className="van-tile">
             {/* <Link to={`/vans/${van.id}`}>  -> change to relative path, instead of absolute. 
                 no template string require `` singe id is already a string */} 
-                <Link to={van.id} state={{ search: searchParams.toString() }}>
+                <Link to={van.id} state={{ search: `?${searchParams.toString()}` }}>
                 <img src={van.imageUrl} />
                 <div className="van-info">
                     <h3>{van.name}</h3>
