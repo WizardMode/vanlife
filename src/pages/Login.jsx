@@ -1,5 +1,5 @@
 import React from "react"
-import { useNavigate, useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { loginUser } from "../api"
 
 /* hook up our form so it (halfway) works.
@@ -34,11 +34,21 @@ import { loginUser } from "../api"
  *    an error in state
  */
 
+/*
+ * read up on the useNavigate hook from the 
+ * docs and implement it in the VanLife app. When the user
+ * successfully logs in, they should be redirected to the 
+ * /host route.
+ * https://reactrouter.com/en/main/hooks/use-navigate
+ */
+
 function Login() {
-    const [loginFormData, setLoginFormData] = React.useState({ email: "", password: ""})
+    const [loginFormData, setLoginFormData] = React.useState({ email: "", password: "" })
     const [status, setStatus] = React.useState("idle")
     const [error, setError] = React.useState(null)
+
     const location = useLocation()
+    const navigate = useNavigate()
     // console.log(location)
 
     function handleSubmit(e) {
@@ -46,23 +56,25 @@ function Login() {
         setStatus("submitting")
         loginUser(loginFormData)
             .then(data => {
-                console.log(data)
                 setError(null)
-            }).catch(err => {
+                navigate("/host")
+            })
+            .catch(err => {
                 setError(err)
-            }).finally(() => {
+            })
+            .finally(() => {
                 setStatus("idle")
             })
-        // console.log(loginFormData)
     }
 
     function handleChange(e) {
-        const {name, value } = e.target
+        const { name, value } = e.target
         setLoginFormData(prev => ({
             ...prev,
             [name]: value
         }))
     }
+
 
     /*
         If location.state.message exists,
@@ -72,20 +84,21 @@ function Login() {
     return (
         <div className="login-container">
             {
-                location.state?.message &&
-                <h3 className="login-error">{location.state.message}</h3>
+                location.state ?.message &&
+                    <h3 className="login-error">{location.state.message}</h3>
             }
             <h1>Sign in to your account</h1>
             {
-                error?.message &&
-                <h3 className="login-error">{error.message}</h3>
+                error ?.message &&
+                    <h3 className="login-error">{error.message}</h3>
             }
+
             <form onSubmit={handleSubmit} className="login-form">
                 <input
                     name="email"
                     onChange={handleChange}
                     type="email"
-                    placeholder="Email adress"
+                    placeholder="Email address"
                     value={loginFormData.email}
                 />
                 <input
@@ -95,10 +108,10 @@ function Login() {
                     placeholder="Password"
                     value={loginFormData.password}
                 />
-                <button 
+                <button
                     disabled={status === "submitting"}
                 >
-                    {status ==="submitting"
+                    {status === "submitting"
                         ? "Logging in..."
                         : "Log in"
                     }
